@@ -8,17 +8,19 @@ import {
 } from "@whiskeysockets/baileys";
 import { DatabaseManager } from "./database";
 
-const KEY_MAP: { [T in keyof SignalDataTypeMap]: string } = {
+const KEY_MAP = {
   "pre-key": "preKeys",
   session: "sessions",
   "sender-key": "senderKeys",
   "app-state-sync-key": "appStateSyncKeys",
   "app-state-sync-version": "appStateVersions",
   "sender-key-memory": "senderKeyMemory",
-  // Additional mappings required by SignalDataTypeMap
+  // Additional mappings required by SignalDataTypeMap (v7 requires lid-mapping & device-index)
   "lid-mapping": "lidMappings",
+  // Some versions expose device-index, others device-list. Include both for compatibility.
+  "device-index": "deviceIndexes",
   "device-list": "deviceLists",
-};
+} as unknown as { [T in keyof SignalDataTypeMap]: string };
 
 export class AuthStateManager {
   private databaseManager: DatabaseManager;
@@ -105,7 +107,8 @@ export class AuthStateManager {
               let value = keys[key]?.[id];
               if (value) {
                 if (type === "app-state-sync-key") {
-                  value = proto.Message.AppStateSyncKeyData.fromObject(value);
+                  // Baileys v7 removed fromObject; use create()
+                  value = proto.Message.AppStateSyncKeyData.create(value);
                 }
                 dict[id] = value;
               }
