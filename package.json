@@ -15,7 +15,7 @@
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@types/pg": "^8.15.5",
     "@types/qrcode": "^1.5.5",
-    "@whiskeysockets/baileys": "^6.7.19",
+    "@whiskeysockets/baileys": "^7.0.0-rc.6",
     "audio-decode": "^2.2.3",
     "dotenv": "^17.2.2",
     "fluent-ffmpeg": "^2.1.3",
